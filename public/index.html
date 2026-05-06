@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NanoLink API Docs</title>
+    <meta
+      name="description"
+      content="Interactive API documentation for NanoLink."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono&family=Instrument+Sans:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/public/style.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@amansanoj/brand/globals.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@latest/src/duotone/style.css"
+    />
+
+    <script>
+      (() => {
+        const saved = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        const isDark = saved === "dark" || (!saved && prefersDark);
+        document.documentElement.classList.toggle("dark", isDark);
+        document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+      })();
+    </script>
+  </head>
+
+  <body
+    class="bg-background text-foreground min-h-screen flex flex-col items-center pt-16 px-5 pb-20 font-body antialiased leading-normal"
+  >
+    <div class="w-full max-w-5xl flex flex-col gap-12">
+      <header class="flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <h1 class="text-5xl font-semibold font-display tracking-normal">
+            NanoLink API
+          </h1>
+
+          <button
+            id="theme-toggle"
+            type="button"
+            class="text-muted-foreground hover:text-secondary transition-colors duration-200 flex items-center"
+            aria-label="Toggle dark mode"
+          >
+            <i id="icon-sun" class="ph-duotone ph-sun hidden text-[2rem]"></i>
+            <i id="icon-moon" class="ph-duotone ph-moon hidden text-[2rem]"></i>
+          </button>
+        </div>
+
+        <p class="text-xl text-muted-foreground">
+          A blazing-fast URL shortener and analytics engine.
+        </p>
+      </header>
+
+      <hr class="border-border border-t-2" />
+    </div>
+
+    <div class="w-full max-w-4xl flex flex-col gap-12 pt-12 pb-12">
+      <section aria-labelledby="endpoints-heading">
+        <div class="flex flex-col gap-1 mb-10">
+          <h2
+            id="endpoints-heading"
+            class="text-3xl font-semibold font-display"
+          >
+            Endpoints
+          </h2>
+        </div>
+
+        <div class="flex flex-col gap-6">
+          <div
+            class="swatch-card flex flex-col rounded-xl border border-border bg-background overflow-hidden"
+          >
+            <div
+              class="w-full border-b border-border/50 p-6 md:p-8 bg-muted/30 flex flex-col gap-4"
+            >
+              <div class="flex items-center gap-3">
+                <span
+                  class="bg-primary text-primary-foreground font-mono font-bold px-3 py-1 rounded-md text-sm"
+                  >POST</span
+                >
+                <code class="text-foreground font-mono text-lg"
+                  >/api/shorten</code
+                >
+              </div>
+              <p class="text-foreground font-body leading-relaxed">
+                Converts a long URL into a random 6-character short code.
+              </p>
+            </div>
+            <div class="p-6 bg-background">
+              <span
+                class="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 block"
+                >Request Body</span
+              >
+              <pre
+                class="bg-muted border border-border rounded-lg p-4 font-mono text-sm text-foreground overflow-x-auto"
+              ><code>{
+  "url": "https://hackclub.com"
+}</code></pre>
+            </div>
+          </div>
+
+          <div
+            class="swatch-card flex flex-col rounded-xl border border-border bg-background overflow-hidden"
+          >
+            <div class="w-full p-6 md:p-8 bg-muted/30 flex flex-col gap-4">
+              <div class="flex items-center gap-3">
+                <span
+                  class="bg-secondary text-secondary-foreground font-mono font-bold px-3 py-1 rounded-md text-sm"
+                  >GET</span
+                >
+                <code class="text-foreground font-mono text-lg">/:code</code>
+              </div>
+              <p class="text-foreground font-body leading-relaxed">
+                Instantly redirects to the original destination and silently
+                logs the click analytics.
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="swatch-card flex flex-col rounded-xl border border-border bg-background overflow-hidden"
+          >
+            <div class="w-full p-6 md:p-8 bg-muted/30 flex flex-col gap-4">
+              <div class="flex items-center gap-3">
+                <span
+                  class="bg-secondary text-secondary-foreground font-mono font-bold px-3 py-1 rounded-md text-sm"
+                  >GET</span
+                >
+                <code class="text-foreground font-mono text-lg"
+                  >/api/stats/:code</code
+                >
+              </div>
+              <p class="text-foreground font-body leading-relaxed">
+                Retrieves live click analytics and timestamps for a specific
+                short link.
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="swatch-card flex flex-col rounded-xl border border-border bg-background overflow-hidden"
+          >
+            <div class="w-full p-6 md:p-8 bg-muted/30 flex flex-col gap-4">
+              <div class="flex items-center gap-3">
+                <span
+                  class="bg-secondary text-secondary-foreground font-mono font-bold px-3 py-1 rounded-md text-sm"
+                  >GET</span
+                >
+                <code class="text-foreground font-mono text-lg"
+                  >/api/links</code
+                >
+              </div>
+              <p class="text-foreground font-body leading-relaxed">
+                Returns a JSON array of all active short codes stored in the
+                SQLite database.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const iconSun = document.getElementById("icon-sun");
+      const iconMoon = document.getElementById("icon-moon");
+
+      function syncThemeIcons() {
+        const isDark = document.documentElement.classList.contains("dark");
+        iconSun.classList.toggle("hidden", !isDark);
+        iconMoon.classList.toggle("hidden", isDark);
+      }
+
+      function toggleTheme() {
+        const isDark = document.documentElement.classList.toggle("dark");
+        document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+        syncThemeIcons();
+      }
+
+      syncThemeIcons();
+
+      themeToggleBtn.addEventListener("click", () => {
+        document.startViewTransition
+          ? document.startViewTransition(toggleTheme)
+          : toggleTheme();
+      });
+    </script>
+  </body>
+</html>

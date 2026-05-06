@@ -2,26 +2,16 @@ import { Hono } from "hono";
 import shortenRoute from "./routes/shorten";
 import redirectRoute from "./routes/redirect";
 import statsRoute from "./routes/stats";
+import docsRoute from "./routes/docs";
+import { serveStatic } from "hono/bun";
 
 const app = new Hono();
 
-app.get("/", (c) => {
-  return c.json({
-    name: "NanoLink API",
-    description: "A URL shortener and analytics engine.",
-    status: "Online",
-    endpoints: {
-      "POST /api/shorten": {
-        description: "Creates a new short link",
-        body: { url: "" },
-      },
-      "GET /:code": "Redirects to the original URL",
-      "GET /api/stats/:code": "View click analytics for a specific link",
-      "GET /api/links": "View all active shortened links",
-    },
-  });
-});
+app.use("/public/*", serveStatic({ root: "./" }));
 
+app.get("/", (c) => c.redirect("/docs"));
+
+app.route("/docs", docsRoute);
 app.route("/api/shorten", shortenRoute);
 app.route("/", redirectRoute);
 app.route("/api/stats", statsRoute);
