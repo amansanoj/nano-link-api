@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { getAllStats, getClickEvents, getLinkById } from "../db/store";
+import { getClickEvents, getLinkById } from "../db/store";
 
 const statsRoute = new Hono();
 
@@ -15,15 +15,6 @@ statsRoute.get("/:code", (c) => {
 
   return c.json(
     { success: true, data: { ...link, recentActivity: demographics } },
-    200,
-  );
-});
-
-statsRoute.get("/", (c) => {
-  const allLinks = getAllStats();
-
-  return c.json(
-    { success: true, totalLinks: allLinks.length, data: allLinks },
     200,
   );
 });

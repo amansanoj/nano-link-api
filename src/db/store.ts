@@ -97,3 +97,5 @@ export const getClickEvents = (linkId: string) => {
     )
     .all({ $linkId: linkId });
 };
+
+export const get
