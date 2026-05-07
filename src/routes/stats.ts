@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { getAllStats, getLinkById } from "../db/store";
+import { getAllStats, getClickEvents, getLinkById } from "../db/store";
 
 const statsRoute = new Hono();
 
@@ -11,7 +11,12 @@ statsRoute.get("/:code", (c) => {
     return c.json({ success: false, error: "Link not found" }, 404);
   }
 
-  return c.json({ success: true, data: link }, 200);
+  const demographics = getClickEvents(code);
+
+  return c.json(
+    { success: true, data: { ...link, recentActivity: demographics } },
+    200,
+  );
 });
 
 statsRoute.get("/", (c) => {

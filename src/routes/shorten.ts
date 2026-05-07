@@ -1,37 +1,50 @@
 import { Hono } from "hono";
 import { createLinkSchema } from "../types";
-import { insertLink } from "../db/store";
-import { success } from "zod";
+import { insertLink, getLinkById } from "../db/store";
 
 const shortenRoute = new Hono();
 
 const generateCode = () => {
   const chars =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
   let result = "";
-
   for (let i = 0; i < 6; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-
   return result;
 };
 
 shortenRoute.post("/", async (c) => {
   try {
     const body = await c.req.json();
-
     const parsed = createLinkSchema.safeParse(body);
 
     if (!parsed.success) {
       return c.json(
-        { success: false, error: "Invalid HTTP/HTTPS URL provided." },
+        { success: false, error: parsed.error.issues[0].message },
         400,
       );
     }
 
-    const code = generateCode();
+    let code = parsed.data.customCode;
+
+    if (code) {
+      const existingLink = getLinkById(code);
+      if (existingLink) {
+        return c.json(
+          {
+            success: false,
+            error: `The custom code '${code}' is already taken.`,
+          },
+          409,
+        );
+      }
+    } else {
+      code = generateCode();
+      while (getLinkById(code)) {
+        code = generateCode();
+      }
+    }
 
     insertLink({
       id: code,
@@ -39,6 +52,8 @@ shortenRoute.post("/", async (c) => {
       clicks: 0,
       createdAt: new Date().toISOString(),
       lastClicked: null,
+      expiresAt: parsed.data.expiresAt || null,
+      maxClicks: parsed.data.maxClicks || null,
     });
 
     const baseUrl = new URL(c.req.url).origin;

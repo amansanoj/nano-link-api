@@ -99,7 +99,8 @@
                 >
               </div>
               <p class="text-foreground font-body leading-relaxed">
-                Converts a long URL into a random 6-character short code.
+                Converts a long URL into a random 6-character short code, or a
+                specific custom alias if provided.
               </p>
             </div>
             <div class="p-6 bg-background">
@@ -110,7 +111,10 @@
               <pre
                 class="bg-muted border border-border rounded-lg p-4 font-mono text-sm text-foreground overflow-x-auto"
               ><code>{
-  "url": "https://hackclub.com"
+  "url": "https://hackclub.com",
+  "customCode": "hack",
+  "maxClicks": 3,
+  "expiresAt": "2026-05-07T08:06:16.758Z"
 }</code></pre>
             </div>
           </div>

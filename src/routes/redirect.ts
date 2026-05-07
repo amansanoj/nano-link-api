@@ -1,5 +1,11 @@
 import { Hono } from "hono";
-import { getLinkById, recordClick } from "../db/store";
+import {
+  deleteLink,
+  getLinkById,
+  insertClickEvent,
+  recordClick,
+} from "../db/store";
+import { UAParser } from "ua-parser-js";
 
 const redirectRoute = new Hono();
 
@@ -11,6 +17,31 @@ redirectRoute.get("/:code", (c) => {
   if (!link) {
     return c.json({ success: false, error: "Link not found" }, 404);
   }
+
+  if (link.expiresAt && new Date() > new Date(link.expiresAt)) {
+    deleteLink(code);
+    return c.text("This link has expired and self-destructed", 410);
+  }
+
+  if (link.maxClicks !== null && link.clicks >= link.maxClicks) {
+    deleteLink(code);
+    return c.text(
+      "This link has reached its maximum view count and self-destructed",
+      410,
+    );
+  }
+
+  const userAgentString = c.req.header("user-agent") || "";
+
+  const parser = new UAParser(userAgentString);
+  const result = parser.getResult();
+
+  insertClickEvent(
+    code,
+    result.os.name || "Unknown",
+    result.browser.name || "Unknown",
+    result.device.type || "Desktop",
+  );
 
   recordClick(code);
 
