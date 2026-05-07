@@ -4,6 +4,7 @@ import redirectRoute from "./routes/redirect";
 import statsRoute from "./routes/stats";
 import docsRoute from "./routes/docs";
 import { serveStatic } from "hono/bun";
+import qrRoute from "./routes/qr";
 
 const app = new Hono();
 
@@ -16,5 +17,6 @@ app.route("/api/shorten", shortenRoute);
 app.route("/", redirectRoute);
 app.route("/api/stats", statsRoute);
 app.route("/api/links", statsRoute);
+app.route("/api/qr", qrRoute);
 
 export default app;
