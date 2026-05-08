@@ -6,6 +6,7 @@ import {
   recordClick,
 } from "../db/store";
 import { UAParser } from "ua-parser-js";
+import { sendDiscordNotification } from "../services/discord";
 
 const redirectRoute = new Hono();
 
@@ -32,18 +33,24 @@ redirectRoute.get("/:code", (c) => {
   }
 
   const userAgentString = c.req.header("user-agent") || "";
-
   const parser = new UAParser(userAgentString);
   const result = parser.getResult();
 
-  insertClickEvent(
-    code,
-    result.os.name || "Unknown",
-    result.browser.name || "Unknown",
-    result.device.type || "Desktop",
-  );
+  const osName = result.os.name || "Unknown";
+  const browserName = result.browser.name || "Unknown";
+  const deviceType = result.device.type || "Desktop";
+
+  insertClickEvent(code, osName, browserName, deviceType);
 
   recordClick(code);
+
+  sendDiscordNotification(
+    code,
+    link.originalUrl,
+    osName,
+    browserName,
+    deviceType,
+  );
 
   return c.redirect(link.originalUrl, 301);
 });
