@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
 import { bearerAuth } from "hono/bearer-auth";
+import { rateLimiter } from "./middleware/rateLimit";
 
 import shortenRoute from "./routes/shorten";
 import redirectRoute from "./routes/redirect";
@@ -21,6 +22,7 @@ app.use("/api/links/*", bearerAuth({ token }));
 app.use("/api/links", bearerAuth({ token }));
 
 app.route("/docs", docsRoute);
+app.use("/api/shorten", rateLimiter);
 app.route("/api/shorten", shortenRoute);
 app.route("/api/qr", qrRoute);
 app.route("/api/stats", statsRoute);

@@ -98,4 +98,26 @@ export const getClickEvents = (linkId: string) => {
     .all({ $linkId: linkId });
 };
 
-export const get
+export const getLinksCount = () => {
+  const result = db.query(`SELECT COUNT(*) as count FROM links`).get() as {
+    count: number;
+  };
+
+  return result.count;
+};
+
+export const getPaginatedLinks = (limit: number, offset: number) => {
+  return db
+    .query(
+      `
+    SELECT id, originalUrl, clicks, createdAt, expiresAt
+    FROM links
+    ORDER BY createdAt DESC
+    LIMIT $limit OFFSET $offset
+  `,
+    )
+    .all({
+      $limit: limit,
+      $offset: offset,
+    });
+};
