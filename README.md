@@ -92,4 +92,4 @@ For persistent production uptime, run the process using `pm2` or a `systemd` bac
 
 ## Credits & License
 
-Constructed using Bun, Hono, and SQLite. Built for the Hack Club RaspAPI YSWS. This codebase is open-source. Please check the included LICENSE file for redistribution rights and terms.
+Constructed using Bun, Hono, and SQLite. Built for the [Hack Club RaspAPI YSWS](https://raspapi.hackclub.com/). This codebase is open-source. Please check the included LICENSE file for redistribution rights and terms.
