@@ -1,4 +1,4 @@
-![OG Image](https://repo-og-generator.vercel.app/nano-link-api?description=A%20high-performance%2C%20production-ready%20URL%20Shortener%20API%20built%20with%20Bun%2C%20Hono%2C%20and%20SQLite.&variant=accent&scale=2)
+![OG Image](https://repo-og-generator.vercel.app/nanolink-api?description=A%20high-performance%2C%20production-ready%20URL%20Shortener%20API%20built%20with%20Bun%2C%20Hono%2C%20and%20SQLite.&variant=accent&scale=2)
 
 ## Index
 
@@ -82,8 +82,8 @@ The server will spin up at `http://localhost:3000`. Navigate to the root URL in 
 Deployment is streamlined for the Hack Club Nest (or any Linux server). Since Bun handles the runtime and SQLite handles the persistence, simply clone the repository to your server, set up your `.env` file, and run the server directly:
 
 ```sh
-git clone https://github.com/amansanoj/nano-link-api.git
-cd nano-link-api
+git clone https://github.com/amansanoj/nanolink-api.git
+cd nanolink-api
 bun install
 bun run src/index.ts
 ```
